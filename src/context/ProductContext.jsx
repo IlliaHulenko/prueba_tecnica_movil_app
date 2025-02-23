@@ -16,7 +16,7 @@ export default function ProductContextProvider({ children }) {
     // Product selected by id by fetching from the API fetchProductById
     const [selectedProduct, setSelectedProduct] = useState(null);
 
-    const [totalPrice, setTotalPrice] = useState(0);    
+    const [totalPrice, setTotalPrice] = useState(0);
     const [cartProducts, setCartProducts] = useState([]);
 
     const fetchProducts = async () => {
@@ -41,7 +41,7 @@ export default function ProductContextProvider({ children }) {
             const uniqueProducts = Array.from(
                 new Map(data.map(product => [product.id, product])).values()
             );
-            const limitedProd = uniqueProducts.slice(0, 20); 
+            const limitedProd = uniqueProducts.slice(0, 20);
             setProducts(limitedProd);
         } catch (error) {
             setError(error instanceof Error ? error.message : 'An unknown error occurred');
@@ -81,11 +81,11 @@ export default function ProductContextProvider({ children }) {
             setLoading(false);
         }
     };
-    
+
     // Load products from local storage if available and merge with fetched products
     useEffect(() => {
         const storedCartProducts = getProductFromLocalStorage('products-saved') || [];
-    
+
         fetchProducts().then(() => {
             setProducts(prevProducts => {
                 const mergedProducts = prevProducts.map(product => {
@@ -97,21 +97,48 @@ export default function ProductContextProvider({ children }) {
         });
     }, []);
 
+    // Filter products based on the search term
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filteredProducts, setFilteredProducts] = useState(products);
+
+    useEffect(() => {
+        const delaySearch = setTimeout(() => {
+            if (searchTerm.trim() === "") {
+                setFilteredProducts(products);
+                return;
+            }
+            const filtered = products.filter((product) =>
+                product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                product.brand.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setFilteredProducts(filtered);
+        }, 300); // 300ms delay
+
+        return () => clearTimeout(delaySearch); // Cleanup timeout on every keystroke
+    }, [searchTerm, products]);
+
+    const handleSearch = (term) => {
+        setSearchTerm(term);
+    };
+    
+
     useEffect(() => {
         const productsInCart = products.filter(product => product.quantity > 0);
         setCartProducts(productsInCart);
 
         const price = productsInCart.reduce((acc, product) => acc + product.basePrice * product.quantity, 0);
         setTotalPrice(price);
+
+
     }, [products]);
 
     useEffect(() => {
         if (cartProducts.length > 0) {
             setLocalStorage();
         }
-        if (cartProducts.length === 0) {            
+        if (cartProducts.length === 0) {
             removeProductFromLocalStorage('products-saved');
-        }      
+        }
     }, [cartProducts]);
 
     const addToCart = (productToAdd) => {
@@ -131,17 +158,17 @@ export default function ProductContextProvider({ children }) {
                     ? { ...product, quantity: 0 }
                     : product
             )
-        );        
+        );
     };
 
     const setLocalStorage = () => {
         const productsToStore = products.filter(item => item.quantity > 0);
         setProductInLocalStorage('products-saved', productsToStore);
-    };    
+    };
 
     return (
         <ProductContext.Provider value={{
-            products,
+            products: searchTerm ? filteredProducts : products,
             selectedProduct,
             loading,
             error,
@@ -149,7 +176,10 @@ export default function ProductContextProvider({ children }) {
             removeFromCart,
             cartProducts,
             fetchProductById,
-            totalPrice
+            totalPrice,
+
+            searchTerm,
+            handleSearch,
         }}>
             {children}
         </ProductContext.Provider>

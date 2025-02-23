@@ -1,34 +1,33 @@
 import React from 'react'
-import { useParams } from "react-router-dom";
+import { useProductContext } from '../context/ProductContext'
 
 const SearchBar = () => {
-    const router = useParams();
+    const {
+        searchTerm, handleSearch, products
+    } = useProductContext();
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        const search = formData.get('search');
-
-        if(search){
-            router.push(`/list?search=${search}`);
-        }
-    }
-
-  return (
-    <form 
-        className="form"
-        onSubmit={handleSearch}
-    >
-        <input 
-            type="text" 
-            placeholder='Search...'
-            name="search"
-        />
-        <button type='submit'>
-            <img src='./search.svg' alt='Search icon' width={20} height={20}/>
-        </button>
-    </form>
-  )
+    const handleChange = (e) => {
+        handleSearch(e.target.value);
+    };
+    
+    return (
+        <>
+            <div
+                className="form"
+            >
+                <input
+                    type="text"
+                    laceholder="Search products..."
+                    value={searchTerm}
+                    onChange={handleChange}
+                />
+                <button type='submit'>
+                    <img src='./search.svg' alt='Search icon' width={20} height={20} />
+                </button>
+            </div>
+            <p>{products.length > 0 ? products.length : ""} results</p>
+        </>
+    )
 }
 
 export default SearchBar
