@@ -1,5 +1,4 @@
 
-import { useEffect } from 'react';
 import { useProductContext } from '../context/ProductContext'
 
 import ProductItem from './Productitem';
@@ -9,8 +8,7 @@ const ProductList = () => {
         loading, 
         error, 
         products
-    } = useProductContext();    
-    
+    } = useProductContext();        
 
     if (!products) return <p>No products found</p>;
     if (loading) return <p>Loading...</p>;

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import CartButtons from './CartButtons'
 
-const ProductItem = ({ product, fromCart }) => {
+const ProductItem = ({ product }) => {
     
     return (
         <div className="product-list-item">            
@@ -20,8 +20,8 @@ const ProductItem = ({ product, fromCart }) => {
                     <span>{product.name}</span>
                     <span>${product.basePrice}</span>
                 </div>
-            </Link>
-            {!fromCart && <button>Eliminar</button>}
+            </Link>     
+            {/* TODO: Delete CartButtons button        */}
             <CartButtons product={product} />           
         </div>
     )
