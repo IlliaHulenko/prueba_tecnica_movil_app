@@ -13,8 +13,6 @@ const ProductItem = ({ product, fromCart }) => {
                     <img
                         src={product.imageUrl}
                         alt={product.name}
-                        width={300}
-                        height={300}
                         className={`${!fromCart ? 'product-list-item-img' : 'product-list-item-img-from-cart'}`}
                     />
                 </div>

@@ -130,9 +130,6 @@ export default function ProductContextProvider({ children }) {
         setTotalPrice(price);
     }, [products]);
 
-    console.log(cartProducts);
-    
-
     useEffect(() => {
         if (cartProducts.length > 0) {
             setLocalStorage();
