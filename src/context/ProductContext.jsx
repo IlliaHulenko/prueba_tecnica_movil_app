@@ -128,9 +128,10 @@ export default function ProductContextProvider({ children }) {
 
         const price = productsInCart.reduce((acc, product) => acc + product.basePrice * product.quantity, 0);
         setTotalPrice(price);
-
-
     }, [products]);
+
+    console.log(cartProducts);
+    
 
     useEffect(() => {
         if (cartProducts.length > 0) {
@@ -177,7 +178,6 @@ export default function ProductContextProvider({ children }) {
             cartProducts,
             fetchProductById,
             totalPrice,
-
             searchTerm,
             handleSearch,
         }}>

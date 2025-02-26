@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useProductContext } from '../context/ProductContext';
 import { useEffect, useState } from 'react';
-import ProductItem from '../components/Productitem';
+import ProductItem from '../components/ProductItem';
 import Button from '../components/Button';
 
 const PhonePage = () => {

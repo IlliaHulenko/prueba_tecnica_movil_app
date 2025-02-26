@@ -10,7 +10,7 @@ const Button = ({ id, title,  leftIcon, rightIcon, containerClass, disabled, onC
     >
         {leftIcon}
         {/* TODO: Fix Tailwind's CSS styles */}
-        <span className='relative inline-flex overflow-hidden font-general text-xs uppercase'>
+        <span>
             <div>{title}</div>
         </span>
         {rightIcon}

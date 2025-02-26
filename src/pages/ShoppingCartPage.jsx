@@ -1,5 +1,5 @@
 import { useProductContext } from '../context/ProductContext'
-import ProductItem from '../components/Productitem';
+import ProductItem from '../components/ProductItem.jsx';
 import Button from '../components/Button';
 
 
