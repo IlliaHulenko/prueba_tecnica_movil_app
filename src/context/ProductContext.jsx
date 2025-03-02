@@ -119,8 +119,7 @@ export default function ProductContextProvider({ children }) {
 
     const handleSearch = (term) => {
         setSearchTerm(term);
-    };
-    
+    };    
 
     useEffect(() => {
         const productsInCart = products.filter(product => product.quantity > 0);

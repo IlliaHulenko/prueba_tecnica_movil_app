@@ -60,14 +60,14 @@ const PhonePage = () => {
 
     return (
         <div className="phone-page-wrapper">
+            {/* TODO: Add onClick to the back button */}
+            <Button
+                id='back-button'
+                title='Back'
+                leftIcon={<span>{'<'}</span>}
+                containerClass='phone-page-back-button'
+            />
             <div className="phone-page-container">
-                {/* TODO: Add onClick to the back button */}
-                <Button
-                    id='back-button'
-                    title='Back'
-                    leftIcon={<span>{'<'}</span>}
-                    containerClass='phone-page-back-button'
-                />
                 <div className="phone-page-main-info-container">
                     <div className="phone-page-img-container">
                         <img
@@ -82,7 +82,7 @@ const PhonePage = () => {
                                 <h3>{`From ${finalPrice} EUR`}</h3>
                             ) : (
                                 <h3>{`${finalPrice} EUR`}</h3>
-                            )}                            
+                            )}
                         </div>
 
                         {/* Storage Options */}
@@ -134,7 +134,7 @@ const PhonePage = () => {
 
                 {/* Technical Specifications */}
                 <div className="phone-specs-container">
-                    <h2>Specifications</h2>                    
+                    <h2>Specifications</h2>
                     <div className='phone-specs-info'><h4>Brand</h4> <p>{selectedProduct?.brand}</p></div>
                     <div className='phone-specs-info'><h4>Name</h4> <p>{selectedProduct?.name}</p></div>
                     <div className='phone-specs-info'><h4>Description</h4> <p>{selectedProduct?.description}</p></div>
@@ -145,7 +145,7 @@ const PhonePage = () => {
                     <div className='phone-specs-info'><h4>Selfie Camera</h4> <p>{selectedProduct.specs?.selfieCamera}</p></div>
                     <div className='phone-specs-info'><h4>Battery</h4> <p>{selectedProduct.specs?.battery}</p></div>
                     <div className='phone-specs-info'><h4>OS</h4> <p>{selectedProduct.specs?.os}</p></div>
-                    <div className='phone-specs-info'><h4>Scrren refresh rate</h4> <p>{selectedProduct.specs?.screenRefreshRate}</p></div>                    
+                    <div className='phone-specs-info'><h4>Scrren refresh rate</h4> <p>{selectedProduct.specs?.screenRefreshRate}</p></div>
                 </div>
 
                 {/* Similar Products */}

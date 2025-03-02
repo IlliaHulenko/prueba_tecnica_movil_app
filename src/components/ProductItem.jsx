@@ -2,9 +2,11 @@ import { Link } from 'react-router-dom'
 import { useProductContext } from '../context/ProductContext';
 import Button from './Button'
 
-const ProductItem = ({ product, fromCart }) => {
+const ProductItem = ({ product, fromCart, selectedProduct }) => {
 
     const { removeFromCart } = useProductContext();
+
+    console.log(selectedProduct);
 
     return (
         <div className={`${!fromCart ? 'product-list-item' : 'product-list-item-from-cart'}`}>
@@ -18,23 +20,19 @@ const ProductItem = ({ product, fromCart }) => {
                 </div>
             </Link>
             <div className={`${!fromCart ? 'product-list-item-info' : 'product-list-item-info-from-cart'}`}>
-                {/* <div className={`${!fromCart ? 'product-list-item-info-details' : 'product-list-item-info-details-from-cart'}`}>
-                    <span>{product.brand}</span>
-                    <span>{product.name}</span>
-                    <span>${product.basePrice}</span>
-                </div> */}
+                
                 {!fromCart ? (
                     <div className='product-list-item-info-details'>
                         <div className='product-list-item-info-details-phone'>
                             <h4>{product.brand}</h4>
-                            <h3>{product.name}</h3>
+                            <h3>{product.name}</h3>                            
                         </div>
                         <h3>{product.basePrice}EUR</h3>
                     </div>
                 ) : (
                     <div className='product-list-item-info-details-from-cart'>                        
-                        <span>{product.name}</span>
-                        <span>{product.storage}</span>
+                        <h4>{product.name}</h4>                        
+                        <h3>{selectedProduct.storageOptions[0].capacity} | {selectedProduct.colorOptions[0].name}</h3>
                         <span>${product.basePrice}</span>
                     </div>
                 )

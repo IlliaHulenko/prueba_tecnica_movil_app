@@ -4,8 +4,7 @@ const HomePage = () => {
   
   return (
     <main className="main-wrapper">
-      <div className="main-container">
-        <h1>Productos:</h1>
+      <div className="main-container">        
         <div>
           <ProductList />
         </div>

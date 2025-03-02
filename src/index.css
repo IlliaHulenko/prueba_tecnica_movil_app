@@ -2,9 +2,14 @@
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: var(--grafite-black);
   background-color: #fffefe;
   --gainsboro: #DCDCDC;
   --light-gray: #D3D3D3;
@@ -21,6 +26,21 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  ::-webkit-scrollbar{    
+    height: 0.3rem;
+    width: 0.5rem;    
+  }
+
+  ::-webkit-scrollbar-track{
+    background: var(--silver-sand);         
+  }
+
+  ::-webkit-scrollbar-thumb{
+    background: var(--grafite-gray);
+    width: 0.5rem;
+    border-radius: 50vw;
+  }
 }
 
 a {
@@ -65,11 +85,22 @@ h1 {
   }
 }
 
+@media (max-width: 1024px) {
+  :root{
+    width: 100%;
+    padding: 0;
+  }
+  
+}
+
 .main-container {
   padding-left: 1rem;
   padding-right: 1rem;
   margin-top: 6rem;
 
+  /* h1 {
+    font-size: clamp(1.5rem, calc(7vw + 1rem), 3rem);
+  } */
 
   @media (min-width: 768px) {
     padding-left: 2rem;
@@ -88,6 +119,8 @@ h1 {
 
   @media (min-width: 1536px) {}
 }
+
+
 
 /* Logo */
 
@@ -119,9 +152,13 @@ h1 {
   height: 5rem;
   width: 80%;
 
+  @media screen and (max-width: 640px) {
+    padding:  0 0.5rem;
+  }
+
   @media (min-width: 768px) {
     padding-left: 2rem;
-    padding-right: 2rem;
+    padding-right: 2rem;    
   }
 
   @media (min-width: 1024px) {
@@ -215,7 +252,7 @@ h1 {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    color: var(--background);
+    color: whitesmoke;
     background-color: var(--deep-red);
   }
 }
@@ -385,7 +422,6 @@ h1 {
 }
 
 /* Product's list styles */
-
 .product-list-wrapper {
   display: flex;
   margin-top: 3rem;
@@ -395,22 +431,30 @@ h1 {
 }
 
 .product-list-item {
-  position: relative;
-  overflow: hidden;
+  position: relative;  
   display: flex;
   flex-direction: column;
   justify-items: center;
   padding: 0.75rem;
   width: 100%;
-  border: var(--foggy-gray) solid 1px;
+  border: var(--foggy-gray) solid 1px;  
+
+  /* @media screen and (max-width: 640px) {
+    width: max-content;
+  } */
+
+  @media (min-width: 320px) {
+    width: min-content;
+  }
 
   @media (min-width: 640px) {
-    width: 45%;
+    width: 40%;
   }
 
   @media (min-width: 1024px) {
     width: 22%;
   }
+  
 
 }
 
@@ -427,7 +471,6 @@ h1 {
 }
 
 .product-list-item:hover {
-
   h3,
   h4 {
     position: relative;
@@ -445,7 +488,10 @@ h1 {
   justify-content: center;
   align-items: center;
   position: relative;
-  width: 100%;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 1/1;
+  object-fit: cover;
 }
 
 /* ProductItem's list styles when it invokes from the CartPage */
@@ -458,13 +504,19 @@ h1 {
   width: 100%;
   margin: 1rem;
   border: none;
+
+  @media screen and (max-width: 640px) {
+    padding: 0;
+    margin: 0;    
+  }
 }
 
 .product-list-item-images-from-cart {
-
   position: relative;
-  width: 100%;
-  height: 15rem;
+  min-width: 100%;
+  height: auto;
+  aspect-ratio: 1/1;
+  object-fit:cover;
 }
 
 .product-list-item-img-from-cart {
@@ -489,6 +541,12 @@ h1 {
   align-items: flex-start;
   color: var(--grafite-gray);
   height: 100%;
+
+  @media screen and (max-width: 640px) {
+    justify-content: center;
+    height: auto;
+    width: 100%;
+  }
 }
 
 .product-list-item-img {
@@ -512,6 +570,14 @@ h1 {
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+
+  @media screen and (max-width: 640px) {
+    h3,h4{
+      font-size: 0.8rem;
+      margin: 0;
+      text-transform: uppercase;
+    }
+  }
 }
 
 .product-list-item-info-details-from-cart span:nth-child(3) {
@@ -558,6 +624,10 @@ h1 {
   justify-content: flex-end;
   align-items: flex-start;
   height: 7rem;
+
+  @media screen and (max-width: 640px) {
+    height: 4rem;
+  }
 }
 
 .eliminate-item-btn {
@@ -565,13 +635,17 @@ h1 {
   height: fit-content;
   cursor: pointer;
   border: none;
-  padding: none;
+  padding: 0;
   margin: none;
   background: none;
   color: var(--tractor-red);
   text-transform: none;
   font-weight: 500;
   font-size: 1rem;
+
+  @media screen and (max-width: 640px) {
+    font-size: 0.8rem;    
+  }
 }
 
 .item-btn {
@@ -628,26 +702,57 @@ h1 {
 .phone-page-wrapper {
   display: flex;
   justify-content: center;
-  padding: 20px;
+  padding: 0.5rem;
   background-color: inherit;
+  width: 100%;
 }
 
 .phone-page-container {
   background: inherit;
-  padding: 20px;
+  padding: 1.5rem;
   width: 80%;
   height: 100%;
   color: #000000;
+
+  @media screen and (max-width: 640px) {
+    display: flex;
+    flex-direction: column;
+    /* padding: 0.5rem;     */
+    width: 90%;
+  }
+  @media screen and (max-width: 768px) {
+    
+  }
+  @media screen and (max-width: 1024px) {
+    
+  }
 }
 
 .phone-page-main-info-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
+
+  @media screen and (max-width: 640px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0;    
+  }
+  @media screen and (max-width: 768px) {
+    
+  }
+  @media screen and (max-width: 1024px) {
+    
+  }
 }
 
 .phone-page-img-container img {
-  max-width: 500px;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 1/1;
+  object-fit: cover;
 }
 
 .phone-page-info-container {
@@ -655,6 +760,22 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  
+
+  @media screen and (max-width: 640px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    padding: 0;    
+    width: 100%;
+  }
+  @media screen and (max-width: 768px) {
+    
+  }
+  @media screen and (max-width: 1024px) {
+    
+  }
 }
 
 .phone-page-info-container-title {
@@ -662,7 +783,7 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   line-height: 2rem;
 
   h3 {
@@ -674,7 +795,7 @@ h1 {
   }
   #title-name {
     text-transform: uppercase;
-    font-size: 1.2rem;
+    font-size: calmp(1.3rem, calc(3vw + 1rem), 1.5rem);
   }
 }
 
@@ -688,11 +809,59 @@ h1 {
   color: var(--grafite-black);
   font-weight: 300;
   font-size: 1rem;
+
+  @media screen and (max-width: 640px) {
+    text-align: start;    
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+  @media screen and (max-width: 768px) {
+    
+  }
+  @media screen and (max-width: 1024px) {
+    
+  }
 }
 
 .phone-page-storage-options-container {
   display: flex;
   flex-wrap: wrap;
+  width: 100%;
+
+  @media screen and (max-width: 640px) {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+  }
+  @media screen and (max-width: 768px) {
+    
+  }
+  @media screen and (max-width: 1024px) {
+    
+  }
+}
+
+.phone-page-storage-option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  width: max-content;
+  height: 3rem;
+  cursor: pointer;  
+  min-width: 5rem;
+  min-height: 2rem;
+  transition: all 0.5s ease;
+
+  @media screen and (max-width: 640px) {
+    width: 5rem;
+  }
+  @media screen and (max-width: 768px) {
+    
+  }
+  @media screen and (max-width: 1024px) {
+    
+  }
 }
 
 .color-options-container {
@@ -702,17 +871,15 @@ h1 {
   align-items: center;
   height: 10%;
   gap: 0.5rem;
+  
+  @media screen and (max-width: 640px) {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
 }
 
 
-.phone-page-storage-option {
-  padding: 10px;
-  cursor: pointer;
-  text-align: center;
-  width: max-content;
-  min-width: 4rem;
-  transition: all 0.3s ease;
-}
 
 .color-option {
   display: flex;
@@ -753,6 +920,17 @@ h1 {
   align-items: flex-start;
   width: 100%;
 
+  @media screen and (max-width: 640px) {
+    margin: 0;
+    padding: 0;
+  }
+  @media screen and (max-width: 768px) {
+    
+  }
+  @media screen and (max-width: 1024px) {
+    
+  }
+
   h2 {
     display: flex;
     flex-direction: column;
@@ -765,6 +943,8 @@ h1 {
     width: 100%;
     padding-bottom: 3rem;
   }
+
+  
 }
 
 .phone-specs-info {
@@ -772,13 +952,19 @@ h1 {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-
   width: 100%;
   border-bottom: 1px solid var(--silver-sand);
 
+  @media screen and (max-width: 640px) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
   h4 {
     margin: 0;
-    padding: 0;
+    padding: 0;    
     display: flex;
     justify-content: center;
     align-items: center;
@@ -788,6 +974,15 @@ h1 {
     color: var(--grafite-gray);
     font-weight: 300;
     text-align: left;
+
+    @media screen and (max-width: 640px) {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      margin: 1rem 0;         
+      font-size: 1rem;       
+      text-align: start;      
+    }
   }
 
   p {
@@ -796,12 +991,22 @@ h1 {
     align-items: center;
     flex-basis: 70%;
     text-align: left;
+
+    @media screen and (max-width: 640px) {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;   
+      font-size: 1rem;   
+      flex-basis: 60%;    
+    }
   }
+  
 }
 
 .similar-products-wrapper {
   display: flex;
-  flex-direction: column;
+  flex-direction: column;  
+  overflow-x: scroll;  
 
   h2 {
     display: flex;
@@ -819,8 +1024,131 @@ h1 {
 .similar-products-container {
   display: flex;
   flex-direction: row;
-  overflow-x: scroll;
-  width: 100%;
+  height: auto;
+  width: 100dvw;  
+  padding-bottom: 2rem;  
+}
+
+/* General styles for responsiveness */
+@media (max-width: 1024px) {  
+
+  .phone-page-wrapper{
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: inherit;
+    flex-direction: column;
+  }
+  .phone-page-img-container{
+    max-width: max-content;
+    min-width: fit-content;
+  }
+
+  .phone-page-img-container img{
+    max-width: 100%;
+    height: auto;
+    max-width: 420px;
+    max-height: 420px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+  }
+  .phone-specs-container{
+    width: 90%;
+    margin-bottom: 1.5rem;
+  }
+
+  .phone-specs-container h2{
+    width: 80dvw;
+    padding-bottom: 1.5rem;
+  }
+
+  .similar-products-wrapper{
+    width: 90%;
+  }
+  .similar-products-wrapper h2{
+    padding-bottom: 1.5rem;
+  } 
+
+  /* .similar-products-container{
+    width: 90dvw; 
+  } */
+  
+}
+
+@media (max-width: 768px) {
+  .phone-page-storage-option {
+    padding: 8px;
+    min-width: 3.5rem;
+  }
+  
+  .color-option img {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+  
+  .phone-specs-container h2 {
+    font-size: 1.25rem;
+    padding-bottom: 2rem;
+  }
+  
+  /* .phone-specs-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  } */
+  
+  /* .phone-specs-info p {
+    flex-basis: 100%;
+  } */
+  
+  /* .similar-products-container {
+    flex-wrap: wrap;
+    justify-content: center;
+  } */
+}
+
+@media (max-width: 480px) {
+  .phone-page-storage-option {
+    padding: 6px;
+    min-width: 3rem;
+    font-size: 0.875rem;
+  }
+  
+  .color-option {
+    align-items: center;
+  }
+  
+  .color-option img {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  
+  .phone-specs-container {
+    margin: 3rem 0;
+  }
+  
+  .phone-specs-container h2 {
+    font-size: 1rem;
+    padding-bottom: 1.5rem;
+  }
+  
+  /* .phone-specs-info h4 {
+    font-size: 0.875rem;
+  }
+  
+  .phone-specs-info p {
+    font-size: 0.875rem;
+  } */
+  
+  .similar-products-wrapper h2 {
+    font-size: 1rem;
+    padding-bottom: 1.5rem;
+  }
+  
+  /* .similar-products-container {
+    flex-direction: column;
+    align-items: center;
+  } */
 }
 
 /* Product images component styles */
@@ -942,14 +1270,63 @@ h1 {
   opacity: 1;
 }
 
+.shoping-cart-page-wrapper{
+
+  @media screen and (max-width: 640px) {
+    padding: 0 1rem;
+  }
+  @media screen and (max-width: 768px) {
+    
+  }
+  @media screen and (max-width: 1024px) {
+    
+  }
+
+}
+
 .shopping-cart-bottom {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+
+  h4 {
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--grafite-black);
+    margin-left: auto;
+  }
+  span {
+    margin-left: 0.5rem;
+  }
 }
 
-.shopping-cart-bottom-right {
+.shopping-cart-bottom-mobile{
+  display: flex;
+  flex-direction: column; 
+
+  h4 {
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--grafite-black); 
+    float: left;  
+    display: flex;
+    justify-content: space-between; 
+  }
+  
+}
+
+.shopping-cart-bottom-mobile-btns{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* .shopping-cart-bottom-right {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -966,14 +1343,12 @@ h1 {
   span {
     margin-left: 0.5rem;
   }
-}
+} */
 
 /* Styles of a Button component */
 
 .phone-page-back-button {
-  position: relative;
-  top: 1rem;
-  left: 1rem;
+  position: sticky;  
   width: fit-content;
   height: fit-content;
   display: flex;
@@ -985,9 +1360,14 @@ h1 {
   text-transform: uppercase;
   font: 800;
 
+  @media screen and (max-width: 640px) {
+    position: sticky;
+  }
+
   span {
     margin-right: 0.5rem;
   }
+  
 }
 
 .continue-shopping-btn {
@@ -1002,6 +1382,11 @@ h1 {
   color: var(--grafite-gray);
   text-transform: uppercase;
   font: 700;
+
+  @media screen and (max-width: 640px) {
+    padding: 1rem 1rem; 
+    min-width: max-content;      
+  }
 }
 
 .pay-btn {
@@ -1032,14 +1417,29 @@ h1 {
   text-transform: uppercase;
   background: var(--grafite-black);
   color: var(--foggy-gray);
-  font-size: 1rem;
+  font-size: clamp(0.8rem, calc(1vw + 0.5rem), 1rem);
   font-weight: 200;
   border: none;
   cursor: pointer;
   transition: background 1 ease-in-out;
+
+  @media screen and (max-width: 640px) {
+    width: 100%;
+    height: 3rem;
+  }
 }
 
 .add-to-cart-btn:disabled {
   background: var(--gainsboro);
   cursor: not-allowed;
 }
+
+/* @media screen and (max-width: 640px) {
+    
+}
+@media screen and (max-width: 768px) {
+  
+}
+@media screen and (max-width: 1024px) {
+  
+} */
