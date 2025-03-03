@@ -1,23 +1,23 @@
-import { createContext, useState, useEffect, useContext, useCallback, use } from 'react';
-import {
-    getProductFromLocalStorage,
-    setProductInLocalStorage,
-    removeProductFromLocalStorage
-} from '../utilities/LocalStorage';
+import { createContext, useState, useEffect, useContext } from 'react';
 
 export const ProductContext = createContext(null);
 
-// eslint-disable-next-line react/prop-types
 export default function ProductContextProvider({ children }) {
-
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    // Product selected by id by fetching from the API fetchProductById
     const [selectedProduct, setSelectedProduct] = useState(null);
-
     const [totalPrice, setTotalPrice] = useState(0);
     const [cartProducts, setCartProducts] = useState([]);
+    const [selectedStorage, setSelectedStorage] = useState(null);
+    const [selectedColor, setSelectedColor] = useState(null);
+
+    useEffect(() => {
+        const storedCart = localStorage.getItem('products-saved');
+        if (storedCart) {
+            setCartProducts(JSON.parse(storedCart));
+        }
+    }, []);
 
     const fetchProducts = async () => {
         try {
@@ -28,27 +28,23 @@ export default function ProductContextProvider({ children }) {
                 },
             });
 
-            if (!response.ok) {
-                const errorMessage = await response.text();
-                throw new Error(`HTTP error! Status: ${response.status} ${errorMessage}`);
-            }
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
             const data = await response.json();
-            if (!data) {
-                throw new Error('No products received');
-            }
-            // Filter out duplicates and limit to 20 products for display
-            const uniqueProducts = Array.from(
-                new Map(data.map(product => [product.id, product])).values()
-            );
-            const limitedProd = uniqueProducts.slice(0, 20);
-            setProducts(limitedProd);
+            if (!data) throw new Error('No products received');
+
+            const uniqueProducts = Array.from(new Map(data.map(product => [product.id, product])).values());
+            setProducts(uniqueProducts.slice(0, 20));
         } catch (error) {
-            setError(error instanceof Error ? error.message : 'An unknown error occurred');
+            setError(error.message || 'An unknown error occurred');
         } finally {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
 
     const fetchProductById = async (id) => {
         if (!id) return;
@@ -64,108 +60,71 @@ export default function ProductContextProvider({ children }) {
                 },
             });
 
-            if (!response.ok) {
-                const errorMessage = await response.text();
-                throw new Error(`HTTP error! Status: ${response.status} ${errorMessage}`);
-            }
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
             const data = await response.json();
-            if (!data) {
-                throw new Error('No product received');
-            }
+            if (!data) throw new Error('No product received');
+
             setSelectedProduct(data);
         } catch (error) {
-            setError(error instanceof Error ? error.message : 'An unknown error occurred');
+            setError(error.message || 'An unknown error occurred');
             setSelectedProduct(null);
         } finally {
             setLoading(false);
         }
     };
 
-    // Load products from local storage if available and merge with fetched products
-    useEffect(() => {
-        const storedCartProducts = getProductFromLocalStorage('products-saved') || [];
+    const addToCart = () => {
+        if (!selectedProduct || !selectedStorage || !selectedColor) return;
 
-        fetchProducts().then(() => {
-            setProducts(prevProducts => {
-                const mergedProducts = prevProducts.map(product => {
-                    const storedProduct = storedCartProducts.find(p => p.id === product.id);
-                    return storedProduct ? { ...product, quantity: storedProduct.quantity } : product;
-                });
-                return mergedProducts;
-            });
-        });
-    }, []);
+        const productToAdd = {
+            id: selectedProduct.id,
+            name: selectedProduct.name,
+            brand: selectedProduct.brand,
+            imageUrl: selectedColor.imageUrl, // Store selected image
+            selectedStorage: { ...selectedStorage }, // Store selected storage
+            selectedColor: { ...selectedColor }, // Store selected color
+            finalPrice: selectedStorage.price, // Store selected price
+            quantity: 1, // Default quantity
+        };
 
-    // Filter products based on the search term
-    const [searchTerm, setSearchTerm] = useState("");
-    const [filteredProducts, setFilteredProducts] = useState(products);
-
-    useEffect(() => {
-        const delaySearch = setTimeout(() => {
-            if (searchTerm.trim() === "") {
-                setFilteredProducts(products);
-                return;
-            }
-            const filtered = products.filter((product) =>
-                product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                product.brand.toLowerCase().includes(searchTerm.toLowerCase())
+        setCartProducts(prevCart => {
+            const existingProductIndex = prevCart.findIndex(p =>
+                p.id === productToAdd.id &&
+                p.selectedStorage.capacity === productToAdd.selectedStorage.capacity &&
+                p.selectedColor.name === productToAdd.selectedColor.name
             );
-            setFilteredProducts(filtered);
-        }, 300); // 300ms delay
 
-        return () => clearTimeout(delaySearch); // Cleanup timeout on every keystroke
-    }, [searchTerm, products]);
-
-    const handleSearch = (term) => {
-        setSearchTerm(term);
-    };    
-
-    useEffect(() => {
-        const productsInCart = products.filter(product => product.quantity > 0);
-        setCartProducts(productsInCart);
-
-        const price = productsInCart.reduce((acc, product) => acc + product.basePrice * product.quantity, 0);
-        setTotalPrice(price);
-    }, [products]);
-
-    useEffect(() => {
-        if (cartProducts.length > 0) {
-            setLocalStorage();
-        }
-        if (cartProducts.length === 0) {
-            removeProductFromLocalStorage('products-saved');
-        }
-    }, [cartProducts]);
-
-    const addToCart = (productToAdd) => {
-        setProducts(prevProducts =>
-            prevProducts.map(product =>
-                product.id === productToAdd.id
-                    ? { ...product, quantity: (product.quantity || 0) + 1 }
-                    : product
-            )
-        );
+            if (existingProductIndex !== -1) {
+                return prevCart.map((p, index) =>
+                    index === existingProductIndex ? { ...p, quantity: p.quantity + 1 } : p
+                );
+            } else {
+                return [...prevCart, productToAdd];
+            }
+        });
     };
 
     const removeFromCart = (productToRemove) => {
-        setProducts(prevProducts =>
-            prevProducts.map(product =>
-                product.id === productToRemove.id
-                    ? { ...product, quantity: 0 }
-                    : product
-            )
-        );
+        setCartProducts(prevCart => prevCart.filter(p => p.id !== productToRemove.id));
     };
 
-    const setLocalStorage = () => {
-        const productsToStore = products.filter(item => item.quantity > 0);
-        setProductInLocalStorage('products-saved', productsToStore);
-    };
+    useEffect(() => {
+        const total = cartProducts.reduce((sum, cartProduct) => sum + (cartProduct.finalPrice * cartProduct.quantity), 0);
+        setTotalPrice(total);
+    }, [cartProducts]);
+
+    useEffect(() => {
+        if (cartProducts.length > 0) {
+            localStorage.setItem('products-saved', JSON.stringify(cartProducts));
+        } else {
+            localStorage.removeItem('products-saved');
+        }
+    }, [cartProducts]);
 
     return (
         <ProductContext.Provider value={{
-            products: searchTerm ? filteredProducts : products,
+            products,
             selectedProduct,
             loading,
             error,
@@ -174,12 +133,14 @@ export default function ProductContextProvider({ children }) {
             cartProducts,
             fetchProductById,
             totalPrice,
-            searchTerm,
-            handleSearch,
+            setSelectedStorage,
+            setSelectedColor,
+            selectedStorage,
+            selectedColor
         }}>
             {children}
         </ProductContext.Provider>
-    )
+    );
 }
 
 export const useProductContext = () => {
@@ -188,4 +149,4 @@ export const useProductContext = () => {
         throw new Error('useProductContext must be used within a ProductContextProvider');
     }
     return context;
-}
+};

@@ -5,9 +5,9 @@ import Button from '../components/Button';
 
 const ShoppingCartPage = () => {
 
-  const { cartProducts, totalPrice, selectedProduct } = useProductContext();
+  const { cartProducts, totalPrice } = useProductContext();
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 480);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 480);  
 
   useEffect(() => {
     const handleResize = () => {
@@ -23,7 +23,13 @@ const ShoppingCartPage = () => {
       <h1>CART {cartProducts?.length > 9 ? '9+' : cartProducts?.length}</h1>
       <div>
         {cartProducts?.map((cartProduct) => {
-          return <ProductItem key={cartProduct.id} product={cartProduct} fromCart={true} selectedProduct={selectedProduct} />
+          return <ProductItem 
+            key={cartProduct.cartId} 
+            product={cartProduct} 
+            fromCart={true} 
+            selectedStorage={cartProduct.selectedStorage} 
+            selectedColor={cartProduct.selectedColor} 
+          />
         })}
       </div>      
       {isMobile ? (

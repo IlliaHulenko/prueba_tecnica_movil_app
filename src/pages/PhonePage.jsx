@@ -11,13 +11,15 @@ const PhonePage = () => {
         loading,
         error,
         products,
-        addToCart
+        addToCart,
+        setSelectedStorage,
+        setSelectedColor,
+        selectedStorage,
+        selectedColor
     } = useProductContext();
 
     const { id } = useParams();
 
-    const [selectedStorage, setSelectedStorage] = useState(null);
-    const [selectedColor, setSelectedColor] = useState(null);
     const [phoneImage, setPhoneImage] = useState(null);
     const [finalPrice, setFinalPrice] = useState(null);
 
@@ -127,8 +129,9 @@ const PhonePage = () => {
                             title='añadir'
                             containerClass='add-to-cart-btn'
                             disabled={isAddToCartDisabled}
-                            onClick={() => addToCart(selectedProduct)}
+                            onClick={addToCart} // Now each phone is stored independently
                         />
+
                     </div>
                 </div>
 

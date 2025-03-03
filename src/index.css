@@ -498,9 +498,8 @@ h1 {
 .product-list-item-from-cart {
   display: flex;
   flex-direction: row;
-  justify-items: start;
-  border-radius: 1rem;
-  padding: 1rem;
+  justify-items: start;  
+  padding: 0.5rem;
   width: 100%;
   margin: 1rem;
   border: none;
@@ -523,10 +522,11 @@ h1 {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 15rem;
-  height: 15rem;
+  width: 13rem;
+  height: 13rem;
   object-fit: cover;
   position: relative;
+
   z-index: 10;
   border-radius: 0.375rem;
   transition-property: opacity;
@@ -576,7 +576,22 @@ h1 {
       font-size: 0.8rem;
       margin: 0;
       text-transform: uppercase;
+      
     }
+  }
+}
+
+.product-list-item-info-details-from-cart-storage-color{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  
+
+  span{
+    margin: 0 0.2rem;
   }
 }
 
