@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useProductContext } from '../context/ProductContext'
+import { useNavigate } from 'react-router-dom'
 import ProductItem from '../components/ProductItem.jsx';
 import Button from '../components/Button';
 
@@ -8,6 +9,16 @@ const ShoppingCartPage = () => {
   const { cartProducts, totalPrice } = useProductContext();
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 480);  
+
+  // Animated route to HomePage page
+  const navigator = useNavigate();
+  function routeToMainPage() {
+      if (!document.startViewTransition) {
+          navigator('/');
+          return;
+      }
+      document.startViewTransition(() => navigator('/'));
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -20,8 +31,8 @@ const ShoppingCartPage = () => {
 
   return (
     <div className='shoping-cart-page-wrapper'>
-      <h1>CART {cartProducts?.length > 9 ? '9+' : cartProducts?.length}</h1>
-      <div>
+      <h1>CART ({cartProducts?.length > 9 ? '9+' : cartProducts?.length})</h1>
+      <div className='shopping-cart-products'>
         {cartProducts?.map((cartProduct) => {
           return <ProductItem 
             key={cartProduct.cartId} 
@@ -40,6 +51,7 @@ const ShoppingCartPage = () => {
               id='continue-shopping-button'
               title='Continue shopping'
               containerClass={'continue-shopping-btn'}
+              onClick={() => routeToMainPage()}
             />
             <Button
               id='pay-button'
@@ -54,6 +66,7 @@ const ShoppingCartPage = () => {
             id='continue-shopping-button'
             title='Continue shopping'
             containerClass={'continue-shopping-btn'}
+            onClick={() => routeToMainPage()}
           />
           <h4>total <span>{`${totalPrice}`}</span> EUR</h4>
           <Button

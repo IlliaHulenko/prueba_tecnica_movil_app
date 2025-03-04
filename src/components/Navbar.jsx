@@ -1,30 +1,34 @@
-
 import { Link } from 'react-router-dom'
-import Menu from './Menu'
+import { useNavigate } from 'react-router-dom'
 import SearchBar from './SearchBar'
-import NavIcons from './NavIcons'
+import CartIcon from './CartIcon'
 
 const Navbar = () => {
+
+    // Animated route to HomePage page
+    const navigator = useNavigate();
+    function routeToMainPage() {
+        if (!document.startViewTransition) {
+            navigator('/');
+            return;
+        }
+        document.startViewTransition(() => navigator('/'));
+    }
+
     return (
         <nav className='nav-wrapper'>
-            {/* Left side of the navbar */}
-            <div className='left-container'>
+            <div onClick={() => routeToMainPage()}>
                 <Link to="/">
-                    <img src='./mobile.svg' alt='Mobile logo' className='logo'/>
+                    <img src='../../public/mobile.svg' alt='Mobile logo' className='logo' />
                 </Link>
-                <div className='nav-links'>
-                    <Link to="/" className='nav-hover-btn'>Home</Link>
-                    <Link to="/phones" className='nav-hover-btn'>Phones</Link>
-                </div>
-                <Menu />
             </div>
-            {/* Right side of the navbar */}
-            <div className='right-container'>
-                <SearchBar />
-                <NavIcons />
-            </div>
+
+            <SearchBar />
+
+            <CartIcon />
+
         </nav>
-      )
+    )
 }
 
 export default Navbar

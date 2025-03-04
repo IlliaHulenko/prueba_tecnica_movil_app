@@ -13,19 +13,17 @@ const SearchBar = () => {
     return (
         <>
             <div
-                className="form"
+                className="search-bar"
             >
                 <input
                     type="text"
-                    laceholder="Search products..."
+                    placeholder="Search for a smartphone..."
                     value={searchTerm}
                     onChange={handleChange}
                 />
-                <button type='submit'>
-                    <img src='./search.svg' alt='Search icon' width={20} height={20} />
-                </button>
-            </div>
+                <hr id='line'/>
             <p>{products.length > 0 ? products.length : ""} results</p>
+            </div>
         </>
     )
 }

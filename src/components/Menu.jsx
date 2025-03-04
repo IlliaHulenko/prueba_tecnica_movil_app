@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 
 const Menu = () => {
+
     const [open, setOpen] = useState(false);
     const hamburgerRef = useRef(null);
     const menuRef = useRef(null);
@@ -16,7 +17,6 @@ const Menu = () => {
         return () => {
             document.removeEventListener('click', handler);
         }
-
     }, []);
 
     return (

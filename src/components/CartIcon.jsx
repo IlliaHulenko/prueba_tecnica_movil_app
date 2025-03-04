@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
-import ShoppingCartPage from '../pages/ShoppingCartPage';
+import React from 'react';
+
 import { useNavigate } from 'react-router-dom'
 import { useProductContext } from '../context/ProductContext';
 
-const NavIcons = () => {
+const CartIcon = () => {
 
     const { cartProducts } = useProductContext();
-
-    const [isCartOpen, setIsCartOpen] = useState(false);    
 
     // Animated route to products page
     const navigator = useNavigate();
@@ -24,19 +22,16 @@ const NavIcons = () => {
       <div>
           <div className="cart">
               <img 
-                  src='./empty-cart.svg' 
+                  src={cartProducts?.length ? '../../public/full-cart.svg' : '../../public/empty-cart.svg'} 
                   alt='Cart icon' 
                   width={30} 
                   height={30}                
                   onClick={() => routeToProducts()}
               />            
               <div className="cart-count">{cartProducts?.length > 9 ? '9+' : cartProducts?.length}</div>
-          </div>
-          {isCartOpen && (
-              <ShoppingCartPage />
-          )}
+          </div>          
       </div>
     )
 }
 
-export default NavIcons
+export default CartIcon

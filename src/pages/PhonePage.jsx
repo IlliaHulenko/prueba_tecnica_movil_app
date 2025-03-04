@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useProductContext } from '../context/ProductContext';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'
 import ProductItem from '../components/ProductItem';
 import Button from '../components/Button';
 
@@ -23,6 +24,15 @@ const PhonePage = () => {
     const [phoneImage, setPhoneImage] = useState(null);
     const [finalPrice, setFinalPrice] = useState(null);
 
+    // Animated route to HomePage page
+    const navigator = useNavigate();
+    function routeToMainPage() {
+        if (!document.startViewTransition) {
+            navigator('/');
+            return;
+        }
+        document.startViewTransition(() => navigator('/'));
+    }
     // In this useEffect we fetch the product from the API by id
     // With a filter function we find the product by id
     // If the product is found, we set the phoneImage and finalPrice states
@@ -44,7 +54,7 @@ const PhonePage = () => {
     const handleStorageSelection = (storageOption) => {
         setSelectedStorage(storageOption);
         setFinalPrice(storageOption.price);
-    };
+    };        
 
     // Function to handle color selection
     // When we select a color option, we set the selectedColor state 
@@ -52,7 +62,7 @@ const PhonePage = () => {
     const handleColorSelection = (colorOption) => {
         setSelectedColor(colorOption);
         setPhoneImage(colorOption.imageUrl);
-        if (!selectedStorage) {
+        if (!selectedStorage && selectedProduct.storageOptions.length > 0) {
             setSelectedStorage(selectedProduct.storageOptions[0]);
         }
     };
@@ -61,20 +71,24 @@ const PhonePage = () => {
     const isAddToCartDisabled = !selectedStorage || !selectedColor;
 
     return (
-        <div className="phone-page-wrapper">
-            {/* TODO: Add onClick to the back button */}
-            <Button
-                id='back-button'
-                title='Back'
-                leftIcon={<span>{'<'}</span>}
-                containerClass='phone-page-back-button'
-            />
+        <div className="phone-page-wrapper">            
+            <div className='phone-page-back-button-container'>
+                <Button
+                    id='back-button'
+                    title='Back'
+                    leftIcon={<span>{'<'}</span>}
+                    containerClass='phone-page-back-button'
+                    onClick={() => routeToMainPage()}
+                />
+            </div>
             <div className="phone-page-container">
                 <div className="phone-page-main-info-container">
                     <div className="phone-page-img-container">
                         <img
                             src={phoneImage}
                             alt={selectedProduct.name}
+                            width={500}
+                            height={500}
                         />
                     </div>
                     <div className="phone-page-info-container">
@@ -129,9 +143,8 @@ const PhonePage = () => {
                             title='añadir'
                             containerClass='add-to-cart-btn'
                             disabled={isAddToCartDisabled}
-                            onClick={addToCart} // Now each phone is stored independently
+                            onClick={addToCart}
                         />
-
                     </div>
                 </div>
 

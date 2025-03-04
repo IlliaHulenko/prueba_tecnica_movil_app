@@ -75,9 +75,11 @@ export default function ProductContextProvider({ children }) {
     };
 
     const addToCart = () => {
+        // Check if selectedProduct, selectedStorage, and selectedColor are defined
         if (!selectedProduct || !selectedStorage || !selectedColor) return;
 
         const productToAdd = {
+            cartId: `${selectedProduct.id}-${selectedStorage.capacity}-${selectedColor.name}-${Date.now()}`, // Ensure unique ID
             id: selectedProduct.id,
             name: selectedProduct.name,
             brand: selectedProduct.brand,
@@ -89,15 +91,15 @@ export default function ProductContextProvider({ children }) {
         };
 
         setCartProducts(prevCart => {
-            const existingProductIndex = prevCart.findIndex(p =>
-                p.id === productToAdd.id &&
-                p.selectedStorage.capacity === productToAdd.selectedStorage.capacity &&
-                p.selectedColor.name === productToAdd.selectedColor.name
+            const existingProductIndex = prevCart.findIndex(prod =>
+                prod.id === productToAdd.id &&
+                prod.selectedStorage.capacity === productToAdd.selectedStorage.capacity &&
+                prod.selectedColor.name === productToAdd.selectedColor.name
             );
 
             if (existingProductIndex !== -1) {
-                return prevCart.map((p, index) =>
-                    index === existingProductIndex ? { ...p, quantity: p.quantity + 1 } : p
+                return prevCart.map((product, index) =>
+                    index === existingProductIndex ? { ...product, quantity: p.quantity + 1 } : product
                 );
             } else {
                 return [...prevCart, productToAdd];
@@ -106,7 +108,7 @@ export default function ProductContextProvider({ children }) {
     };
 
     const removeFromCart = (productToRemove) => {
-        setCartProducts(prevCart => prevCart.filter(p => p.id !== productToRemove.id));
+        setCartProducts(prevCart => prevCart.filter(prod => prod.id !== productToRemove.id));
     };
 
     useEffect(() => {
@@ -122,9 +124,34 @@ export default function ProductContextProvider({ children }) {
         }
     }, [cartProducts]);
 
+    //Serching products in SearchBar component
+
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filteredProducts, setFilteredProducts] = useState(products);
+
+    useEffect(() => {
+        const delaySearch = setTimeout(() => {
+            if (searchTerm.trim() === "") {
+                setFilteredProducts(products);
+                return;
+            }
+            const filtered = products.filter((product) =>
+                product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                product.brand.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setFilteredProducts(filtered);
+        }, 300); // 300ms delay
+
+        return () => clearTimeout(delaySearch); // Cleanup timeout on every keystroke
+    }, [searchTerm, products]);
+
+    const handleSearch = (term) => {
+        setSearchTerm(term);
+    };
+
     return (
         <ProductContext.Provider value={{
-            products,
+            products: searchTerm ? filteredProducts : products,
             selectedProduct,
             loading,
             error,
@@ -136,7 +163,9 @@ export default function ProductContextProvider({ children }) {
             setSelectedStorage,
             setSelectedColor,
             selectedStorage,
-            selectedColor
+            selectedColor,
+            searchTerm,
+            handleSearch
         }}>
             {children}
         </ProductContext.Provider>

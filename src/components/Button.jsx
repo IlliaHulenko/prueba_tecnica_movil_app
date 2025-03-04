@@ -8,8 +8,7 @@ const Button = ({ id, title,  leftIcon, rightIcon, containerClass, disabled, onC
         disabled={disabled} 
         onClick={onClick}     
     >
-        {leftIcon}
-        {/* TODO: Fix Tailwind's CSS styles */}
+        {leftIcon}        
         <span>
             <div>{title}</div>
         </span>
