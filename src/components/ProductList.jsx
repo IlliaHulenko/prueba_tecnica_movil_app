@@ -1,7 +1,7 @@
 
 import { useProductContext } from '../context/ProductContext'
 
-import ProductItem from './Productitem';
+import ProductItem from './ProductItem.jsx';
 
 const ProductList = () => {
     const { 
