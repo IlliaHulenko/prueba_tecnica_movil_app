@@ -22,7 +22,7 @@ const CartIcon = () => {
       <div>
           <div className="cart">
               <img 
-                  src={import.meta.env.BASE_URL + '../../public/empty-cart.svg'} 
+                  src={`${import.meta.env.BASE_URL}/${empty-cart.svg}`} 
                   alt='Cart icon' 
                   width={30} 
                   height={30}                
