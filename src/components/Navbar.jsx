@@ -19,7 +19,7 @@ const Navbar = () => {
         <nav className='nav-wrapper'>
             <div onClick={() => routeToMainPage()}>
                 <Link to="/">
-                    <img src='../../public/mobile.svg' alt='Mobile logo' className='logo' />
+                    <img src={import.meta.env.BASE_URL + '../../public/mobile.svg'} alt='Mobile logo' className='logo' />
                 </Link>
             </div>
 
