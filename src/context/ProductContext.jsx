@@ -99,7 +99,7 @@ export default function ProductContextProvider({ children }) {
 
             if (existingProductIndex !== -1) {
                 return prevCart.map((product, index) =>
-                    index === existingProductIndex ? { ...product, quantity: p.quantity + 1 } : product
+                    index === existingProductIndex ? { ...product, quantity: product.quantity + 1 } : product
                 );
             } else {
                 return [...prevCart, productToAdd];
