@@ -21,6 +21,7 @@ const ProductItem = ({
                                 src={product.imageUrl}
                                 alt={product.name}
                                 className='product-list-item-img'
+                                loading='lazy'
                             />
                         </div>
                     </Link>

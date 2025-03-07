@@ -87,6 +87,7 @@ const PhonePage = () => {
                         <img
                             src={phoneImage}
                             alt={selectedProduct.name}
+                            loading='lazy'
                             width={500}
                             height={500}
                         />
